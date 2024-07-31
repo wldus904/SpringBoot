@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,15 +21,19 @@ public class StudentService {
         long count = studentRepository.count() + 1;
         String studentIdStr = datePart + String.format("%02d", count);
 
-        student.setStudentId(Integer.parseInt(studentIdStr));
+        student.setStudentId(studentIdStr);
         return studentRepository.save(student);
     }
 
-    public Optional<Student> getStudentById(Integer studentId) {
+    public List<Student> getAllStudent() {
+        return studentRepository.findAll();
+    }
+
+    public Optional<Student> getStudentById(String studentId) {
         return studentRepository.findById(studentId);
     }
 
-    public void deleteStudent(Integer studentId) {
+    public void deleteStudent(String studentId) {
         studentRepository.deleteById(studentId);
     }
 }

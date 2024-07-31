@@ -1,7 +1,6 @@
 package com.infrun.myrestfulservice.study.entity;
 
 import jakarta.persistence.*;
-import lombok.Cleanup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,9 +12,8 @@ import java.time.LocalDateTime;
 @Table(name="student")
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="student_id", nullable = false)
-    private Integer studentId;
+    private String studentId;
 
     @Column(name="password", nullable = false)
     private String password = "1234";
