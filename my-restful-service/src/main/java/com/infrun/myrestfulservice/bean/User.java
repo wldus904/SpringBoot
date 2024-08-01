@@ -2,19 +2,19 @@ package com.infrun.myrestfulservice.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor // default 생성자
+@AllArgsConstructor // 전체를 다 가진 생성자
 @JsonIgnoreProperties(value = {"password", "ssn"})// response에 이 값들을 포함하지 않음
 @Entity
 @Table(name="users")
@@ -34,4 +34,15 @@ public class User {
 
 //    @JsonIgnore // response에 이 값을 포함하지 않음
     private String ssn;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> post;
+
+    public User(Integer id, String name, Date joinDate, String password, String ssn) {
+        this.id = id;
+        this.name = name;
+        this.joinDate = joinDate;
+        this.password = password;
+        this.ssn = ssn;
+    }
 }

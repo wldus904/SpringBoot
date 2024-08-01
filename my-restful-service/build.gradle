@@ -36,7 +36,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.4'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.5'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-//	implementation 'org.springframework.boot:spring-boot-starter-security:3.0.2'
+	implementation 'org.springframework.boot:spring-boot-starter-security:3.0.2'
 }
 
 tasks.named('test') {

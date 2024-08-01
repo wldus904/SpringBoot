@@ -41,7 +41,7 @@ public class UserController {
 
         EntityModel entityModel = EntityModel.of(user);
 
-        // 왜 쓴거?
+        // 다음 행동을 알려주기 위해 사용
         WebMvcLinkBuilder linTo = linkTo(methodOn(this.getClass()).retrieveUser(id));
         entityModel.add(linTo.withRel("all-users")); // all-users -> https://localhost:8088/users
 
