@@ -1,7 +1,15 @@
 package com.infrun.myrestfulservice.study.controller;
 
+import com.infrun.myrestfulservice.exception.UserDuplicateException;
+import com.infrun.myrestfulservice.exception.UserNotFoundException;
+import com.infrun.myrestfulservice.study.dto.StudentDto;
+import com.infrun.myrestfulservice.study.dto.StudentLoginDto;
+import com.infrun.myrestfulservice.study.dto.TokenDto;
 import com.infrun.myrestfulservice.study.entity.Student;
+import com.infrun.myrestfulservice.study.service.StudentJoinService;
+import com.infrun.myrestfulservice.study.service.StudentLoginService;
 import com.infrun.myrestfulservice.study.service.StudentService;
+import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,24 +22,56 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private StudentJoinService studentJoinService;
+    @Autowired
+    private StudentLoginService studentLoginService;
 
-    @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student savedStudent = studentService.saveStudent(student);
-        return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
+    @PostMapping("/join")
+    public CommonResponse createStudent(@RequestBody StudentDto studentDto) {
+        CommonResponse commonResponse = new CommonResponse();
+        try {
+            studentJoinService.joinStudent(studentDto);
+        } catch (UserDuplicateException e) {
+            commonResponse.setError(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        return commonResponse;
+    }
+
+    @PostMapping("login")
+    public CommonResponse loginStudent(@RequestBody StudentLoginDto studentLoginDto) {
+        CommonResponse commonResponse = new CommonResponse();
+        TokenDto tokenDto = null;
+
+        try {
+            tokenDto = studentLoginService.login(studentLoginDto);
+        } catch (UserNotFoundException e) {
+            commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+
+        commonResponse.setData(tokenDto);
+
+        return commonResponse;
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> getAllStudent() {
+    public CommonResponse getAllStudent() {
         List<Student> students = studentService.getAllStudent();
-        return new ResponseEntity<>(students, HttpStatus.OK);
+        return new CommonResponse(students);
     }
 
-    @GetMapping("/{studentId}")
-    public ResponseEntity<Student> getStudentById(@PathVariable String studentId) {
-        return studentService.getStudentById(studentId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @GetMapping("/{id}")
+    public CommonResponse getStudentById(@PathVariable String id) {
+        CommonResponse commonResponse = new CommonResponse();
+
+        try {
+            Student student = studentService.getStudentById(id);
+            commonResponse.setData(student);
+        } catch (UserNotFoundException e) {
+            commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+
+        return commonResponse;
     }
 
     @DeleteMapping("/{studentId}")

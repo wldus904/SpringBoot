@@ -1,12 +1,15 @@
 package com.infrun.myrestfulservice.study.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @NoArgsConstructor
 @Entity
 @Table(name="student")
@@ -15,6 +18,7 @@ public class Student {
     @Column(name="student_id", nullable = false)
     private String studentId;
 
+//    @JsonIgnore
     @Column(name="password", nullable = false)
     private String password = "1234";
 
@@ -45,5 +49,15 @@ public class Student {
     @PreUpdate
     protected void onUpdate() {
         modDate = LocalDateTime.now();
+    }
+
+    @Builder
+    public Student(String studentId, String password, String studentName, String address, String email, String phone) {
+        this.studentId = studentId;
+        this.password = password;
+        this.studentName = studentName;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
     }
 }
