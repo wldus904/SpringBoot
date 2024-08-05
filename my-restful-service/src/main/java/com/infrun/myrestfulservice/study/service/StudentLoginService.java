@@ -9,6 +9,7 @@ import com.infrun.myrestfulservice.study.entity.MemberRefreshToken;
 import com.infrun.myrestfulservice.study.entity.Student;
 import com.infrun.myrestfulservice.study.util.TokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.coyote.BadRequestException;
@@ -28,7 +29,7 @@ public class StudentLoginService {
     private final MemberRefreshTokenService memberRefreshTokenService;
 
     @Transactional
-    public TokenDto login(StudentLoginDto studentLoginDto) throws UserNotFoundException {
+    public TokenDto login(StudentLoginDto studentLoginDto, HttpServletResponse response) throws UserNotFoundException {
         String studentId = studentLoginDto.getStudentId();
         if (!studentService.existById(studentId)) {
             throw new UserNotFoundException("로그인 정보를 확인해주세요.");
@@ -42,6 +43,7 @@ public class StudentLoginService {
         TokenDto tokenDto = jwtTokenProvider.generateTokenDto(student.getPhone());
 
         memberRefreshTokenService.saveTokenByTokenDto(student.getStudentId(), tokenDto);
+        jwtTokenProvider.addRefreshTokenToCookie(response, tokenDto.getRefreshToken());
 
         return tokenDto;
     }
