@@ -11,6 +11,7 @@ import com.infrun.myrestfulservice.study.service.StudentLoginService;
 import com.infrun.myrestfulservice.study.service.StudentService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,13 +41,13 @@ public class StudentController {
         return commonResponse;
     }
 
-    @PostMapping("login")
-    public CommonResponse loginStudent(@RequestBody StudentLoginDto studentLoginDto) {
+    @PostMapping("/login")
+    public CommonResponse loginStudent(@RequestBody StudentLoginDto studentLoginDto, HttpServletResponse response) {
         CommonResponse commonResponse = new CommonResponse();
         TokenDto tokenDto = null;
 
         try {
-            tokenDto = studentLoginService.login(studentLoginDto);
+            tokenDto = studentLoginService.login(studentLoginDto, response);
         } catch (UserNotFoundException e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -57,7 +58,7 @@ public class StudentController {
     }
 
     @PostMapping("/reissue")
-    public CommonResponse response(HttpServletRequest request) throws BadRequestException {
+    public CommonResponse reissue(HttpServletRequest request) throws BadRequestException {
         TokenDto tokenDto = studentLoginService.reissue(request);
         return new CommonResponse(tokenDto);
     }

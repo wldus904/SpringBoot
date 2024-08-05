@@ -8,6 +8,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,6 +84,15 @@ public class JwtTokenProvider {
                 .setSubject(subject)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public void addRefreshTokenToCookie(HttpServletResponse response, String refreshToken) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);  // JavaScript에서 접근 불가
+        cookie.setSecure(true);    // HTTPS에서만 전송
+        cookie.setPath("/");       // 애플리케이션 전체에 적용
+        cookie.setMaxAge(REFRESH_TOKEN_EXPIRE_TIME / 1000);  // 쿠키 만료 기간 설정
+        response.addCookie(cookie);
     }
 
     public Authentication getAuthentication(String accessToken) throws AccessDeniedException {
