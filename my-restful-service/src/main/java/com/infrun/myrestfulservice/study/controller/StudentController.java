@@ -10,6 +10,8 @@ import com.infrun.myrestfulservice.study.service.StudentJoinService;
 import com.infrun.myrestfulservice.study.service.StudentLoginService;
 import com.infrun.myrestfulservice.study.service.StudentService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +54,12 @@ public class StudentController {
         commonResponse.setData(tokenDto);
 
         return commonResponse;
+    }
+
+    @PostMapping("/reissue")
+    public CommonResponse response(HttpServletRequest request) throws BadRequestException {
+        TokenDto tokenDto = studentLoginService.reissue(request);
+        return new CommonResponse(tokenDto);
     }
 
     @GetMapping

@@ -3,7 +3,7 @@
     <option name="ALTERNATIVE_JRE_PATH" value="openjdk-22" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.infrun.myrestfulservice.MyRestfulServiceApplication" />
-    <module name="my-restful-service.my-restful-service" />
+    <module name="com.infrun.my-restful-service.main" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.infrun.myrestfulservice.*" />
