@@ -44,15 +44,13 @@ public class StudentController {
     @PostMapping("/login")
     public CommonResponse loginStudent(@RequestBody StudentLoginDto studentLoginDto, HttpServletResponse response) {
         CommonResponse commonResponse = new CommonResponse();
-        TokenDto tokenDto = null;
 
         try {
-            tokenDto = studentLoginService.login(studentLoginDto, response);
+            studentLoginService.login(studentLoginDto, response);
+            commonResponse.setStatus(HttpStatus.OK.value());
         } catch (UserNotFoundException e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
         }
-
-        commonResponse.setData(tokenDto);
 
         return commonResponse;
     }

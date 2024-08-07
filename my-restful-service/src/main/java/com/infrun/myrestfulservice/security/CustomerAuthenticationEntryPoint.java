@@ -25,7 +25,8 @@ public class CustomerAuthenticationEntryPoint implements AuthenticationEntryPoin
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);      // JSON 타입 반환
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());   // 한국어 허용
 
-        CommonResponse commonResponse = new CommonResponse(HttpStatus.UNAUTHORIZED);
+        CommonResponse commonResponse = new CommonResponse();
+        commonResponse.setError(HttpStatus.UNAUTHORIZED, "인증에 실패했습니다.");
         PrintWriter responseWriter = response.getWriter();
         ObjectMapper objectMapper = new ObjectMapper();
         responseWriter.write(objectMapper.writeValueAsString(commonResponse));

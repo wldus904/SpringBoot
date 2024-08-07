@@ -86,13 +86,19 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public void addRefreshTokenToCookie(HttpServletResponse response, String refreshToken) {
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
+    public void addTokenToCookie(HttpServletResponse response, TokenDto tokenDto) {
+        response.addCookie(makeTokenToCookie("refreshToken", tokenDto.getRefreshToken(), REFRESH_TOKEN_EXPIRE_TIME));
+        response.addCookie(makeTokenToCookie("accessToken", tokenDto.getAccessToken(), ACCESS_TOKEN_EXPIRE_TIME));
+    }
+
+    private Cookie makeTokenToCookie (String tokenName, String token, int expireTime) {
+        Cookie cookie = new Cookie(tokenName, token);
         cookie.setHttpOnly(true);  // JavaScript에서 접근 불가
         cookie.setSecure(true);    // HTTPS에서만 전송
         cookie.setPath("/");       // 애플리케이션 전체에 적용
-        cookie.setMaxAge(REFRESH_TOKEN_EXPIRE_TIME / 1000);  // 쿠키 만료 기간 설정
-        response.addCookie(cookie);
+        cookie.setMaxAge(expireTime / 1000);  // 쿠키 만료 기간 설정
+
+        return cookie;
     }
 
     public Authentication getAuthentication(String accessToken) throws AccessDeniedException {

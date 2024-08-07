@@ -22,11 +22,12 @@ public class CustomerAccessDeniedHandler extends AccessDeniedHandlerImpl {
     public void handle(HttpServletRequest request,
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-        CommonResponse commonResponse = new CommonResponse(HttpStatus.UNAUTHORIZED);
+        CommonResponse commonResponse = new CommonResponse();
+        commonResponse.setError(HttpStatus.FORBIDDEN, "사용자 권한이 없습니다.");
         PrintWriter responseWriter = response.getWriter();
         ObjectMapper objectMapper = new ObjectMapper();
         responseWriter.write(objectMapper.writeValueAsString(commonResponse));
