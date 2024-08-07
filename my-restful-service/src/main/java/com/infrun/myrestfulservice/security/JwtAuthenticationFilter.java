@@ -3,6 +3,7 @@ package com.infrun.myrestfulservice.security;
 import com.infrun.myrestfulservice.study.util.TokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -25,11 +28,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
-        String token = TokenUtil.parsingToken(authHeader);
-        if (!StringUtils.isEmpty(token)) {
-            // 토큰이 유효하지 않은 경우 exception 발생
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        String requestURI = request.getRequestURI();
+
+        // 인증이 필요 없는 경로를 설정
+        if (requestURI.equals("/api/members/join")
+                || requestURI.equals("/api/members/login")
+                || requestURI.equals("/api/members/reissue")
+        ) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies == null || cookies.length == 0) {
+            throw new AccessDeniedException("잘못된 요청입니다.");
+        }
+
+        String accessToken = Arrays.stream(cookies)
+                .filter(cookie -> "accessToken".equals(cookie.getName()))
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElseThrow(() -> new AccessDeniedException("잘못된 요청입니다."));
+
+        if (!StringUtils.isEmpty(accessToken)) {
+            // 토큰이 유효하지 않은 경우 exception 발생l
+            Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

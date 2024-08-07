@@ -1,9 +1,7 @@
 package com.infrun.myrestfulservice.study.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,18 +10,18 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name="student")
-public class Student {
+@Table(name="member")
+public class Member {
     @Id
-    @Column(name="student_id", nullable = false)
-    private String studentId;
+    @Column(name="member_id", nullable = false)
+    private String memberId;
 
 //    @JsonIgnore
     @Column(name="password", nullable = false)
     private String password = "1234";
 
-    @Column(name="student_name", nullable = false)
-    private String studentName;
+    @Column(name="name", nullable = false)
+    private String name;
 
     @Column(name="address", nullable = false)
     private String address;
@@ -52,10 +50,10 @@ public class Student {
     }
 
     @Builder
-    public Student(String studentId, String password, String studentName, String address, String email, String phone) {
-        this.studentId = studentId;
+    public Member(String memberId, String password, String name, String address, String email, String phone) {
+        this.memberId = memberId;
         this.password = password;
-        this.studentName = studentName;
+        this.name = name;
         this.address = address;
         this.email = email;
         this.phone = phone;

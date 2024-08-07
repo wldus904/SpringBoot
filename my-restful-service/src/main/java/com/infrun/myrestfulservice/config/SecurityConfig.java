@@ -25,10 +25,9 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     // 아래 기재된 엔드포인트 인정 없이 접근
     private final static String[] PERMIT_ALL = {
-            "/api/students/join",
-            "/api/students/login",
-//            "/api/students", // 나중에 주석처리
-            "/api/students/reissue" // refresh token을 통한 재발급
+            "/api/members/login",
+            "/api/members/join",
+            "/api/members/reissue" // refresh token을 통한 재발급
     };
 
     // CSFR 공격으로부터 방어하기 위해 리소스 변경하는 delete, create등은 함부로 하지 못하도록 막혀있음

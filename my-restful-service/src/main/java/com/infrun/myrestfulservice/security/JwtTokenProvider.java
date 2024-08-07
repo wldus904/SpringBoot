@@ -91,6 +91,11 @@ public class JwtTokenProvider {
         response.addCookie(makeTokenToCookie("accessToken", tokenDto.getAccessToken(), ACCESS_TOKEN_EXPIRE_TIME));
     }
 
+    public void removeTokenToCookie(HttpServletResponse response) {
+        response.addCookie(makeTokenToCookie("refreshToken", null, 0));
+        response.addCookie(makeTokenToCookie("accessToken", null, 0));
+    }
+
     private Cookie makeTokenToCookie (String tokenName, String token, int expireTime) {
         Cookie cookie = new Cookie(tokenName, token);
         cookie.setHttpOnly(true);  // JavaScript에서 접근 불가
