@@ -43,8 +43,7 @@ public class StudentLoginService {
         TokenDto tokenDto = jwtTokenProvider.generateTokenDto(student.getPhone());
 
         memberRefreshTokenService.saveTokenByTokenDto(student.getStudentId(), tokenDto);
-        jwtTokenProvider.addRefreshTokenToCookie(response, tokenDto.getRefreshToken());
-
+        jwtTokenProvider.addTokenToCookie(response, tokenDto);
         return tokenDto;
     }
 
