@@ -27,7 +27,7 @@ public class SecurityConfig {
     private final static String[] PERMIT_ALL = {
             "/api/members/login",
             "/api/members/join",
-            "/api/members/reissue" // refresh token을 통한 재발급
+            "/api/members/reissue", // refresh token을 통한 재발급
     };
 
     // CSFR 공격으로부터 방어하기 위해 리소스 변경하는 delete, create등은 함부로 하지 못하도록 막혀있음
