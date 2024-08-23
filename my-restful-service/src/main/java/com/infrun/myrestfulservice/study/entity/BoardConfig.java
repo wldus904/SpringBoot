@@ -1,6 +1,7 @@
 package com.infrun.myrestfulservice.study.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,11 @@ public class BoardConfig {
 
     @OneToMany(mappedBy = "boardConfig")
     private List<Board> boards;
+
+    @Builder
+    public BoardConfig(Integer boardConfigId, String title, int type) {
+        this.boardConfigId = boardConfigId;
+        this.title = title;
+        this.type = type;
+    }
 }

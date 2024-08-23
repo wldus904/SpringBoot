@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -56,11 +57,19 @@ public class Board {
     }
 
     @Builder
-    public Board(String title, String content, String writerMemberId, int status, String refId) {
+    public Board(BoardConfig boardConfig, String title, String content, String writerMemberId, int status, String refId) {
+        this.boardConfig = boardConfig;
         this.title = title;
         this.content = content;
         this.writerMemberId = writerMemberId;
         this.status = status;
         this.refId = refId;
+    }
+
+    public void updateBoard(BoardConfig boardConfig, String title, String content, int status) {
+        this.boardConfig = boardConfig;
+        this.title = title;
+        this.content = content;
+        this.status = status;
     }
 }
