@@ -1,7 +1,7 @@
 package com.infrun.myrestfulservice.security;
 
 import com.infrun.myrestfulservice.study.constant.AuthConstant;
-import com.infrun.myrestfulservice.study.dto.TokenDto;
+import com.infrun.myrestfulservice.study.member.dto.TokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,7 +21,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.nio.file.AccessDeniedException;
 import java.security.Key;
 import java.time.LocalDateTime;
