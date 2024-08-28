@@ -14,8 +14,8 @@ import java.io.Serializable;
 // 복합키를 만들기 위해서는 Serializable 인터페이스를 구현해야됨
 public class ClassCombinedId implements Serializable {
 
-    private Long memberId;
-    private Long classroomId;
+    private String memberId;
+    private Integer classroomId;
 
 //    @Override
 //    public boolean equals(Object o) {
