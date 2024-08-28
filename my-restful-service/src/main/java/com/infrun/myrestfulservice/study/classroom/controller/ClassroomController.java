@@ -1,5 +1,6 @@
 package com.infrun.myrestfulservice.study.classroom.controller;
 
+import com.infrun.myrestfulservice.study.classroom.dto.ClassroomDto;
 import com.infrun.myrestfulservice.study.classroom.entiry.Classroom;
 import com.infrun.myrestfulservice.study.classroom.service.ClassroomService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(name = "/api/classrooms")
+@RequestMapping("/api/classrooms")
 public class ClassroomController {
     @Autowired
     private ClassroomService classroomService;
@@ -24,7 +25,7 @@ public class ClassroomController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            List<Classroom> classrooms = classroomService.findAllClassroom();
+            List<ClassroomDto> classrooms = classroomService.findAllClassroom();
             commonResponse.setData(classrooms);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

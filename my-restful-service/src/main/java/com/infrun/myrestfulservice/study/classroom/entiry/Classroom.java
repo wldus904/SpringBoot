@@ -1,10 +1,13 @@
 package com.infrun.myrestfulservice.study.classroom.entiry;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,11 +34,11 @@ public class Classroom {
     @Column(name = "reg_date")
     private LocalDateTime regDate;
 
-    @ManyToMany(mappedBy = "classroom")
-    private ClassStudent classStudent;
+    @OneToMany(mappedBy = "classroom")
+    private List<ClassStudent> classStudent;
 
-    @ManyToMany(mappedBy = "classroom")
-    private ClassStaff classStaff;
+    @OneToMany(mappedBy = "classroom")
+    private List<ClassStaff> classStaff;
 
     @PrePersist
     protected void onCreate() {
