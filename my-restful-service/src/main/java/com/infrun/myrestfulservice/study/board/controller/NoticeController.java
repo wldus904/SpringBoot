@@ -1,7 +1,6 @@
 package com.infrun.myrestfulservice.study.board.controller;
 
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
-import com.infrun.myrestfulservice.study.board.entity.Board;
 import com.infrun.myrestfulservice.study.board.service.NoticeService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/board")
@@ -36,8 +34,8 @@ public class NoticeController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            List<BoardDto> boards = noticeService.findAllNotice();
-            commonResponse.setData(boards);
+            List<BoardDto> boardDtos = noticeService.findAllNotice();
+            commonResponse.setData(boardDtos);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -50,8 +48,8 @@ public class NoticeController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Optional<Board> board = noticeService.findNoticeById(boardId);
-            commonResponse.setData(board);
+            BoardDto boardDto = noticeService.findNoticeById(boardId);
+            commonResponse.setData(boardDto);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -64,8 +62,8 @@ public class NoticeController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Board board = noticeService.updateNotice(boardId, boardDto);
-            commonResponse.setData(board);
+            BoardDto resBoardDto = noticeService.updateNotice(boardId, boardDto);
+            commonResponse.setData(resBoardDto);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

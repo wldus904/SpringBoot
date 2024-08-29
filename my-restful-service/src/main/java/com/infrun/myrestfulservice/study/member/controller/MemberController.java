@@ -3,6 +3,7 @@ package com.infrun.myrestfulservice.study.member.controller;
 import com.infrun.myrestfulservice.exception.UserDuplicateException;
 import com.infrun.myrestfulservice.exception.UserNotFoundException;
 import com.infrun.myrestfulservice.study.member.dto.MemberDto;
+import com.infrun.myrestfulservice.study.member.dto.MemberJoinDto;
 import com.infrun.myrestfulservice.study.member.dto.MemberLoginDto;
 import com.infrun.myrestfulservice.study.member.entity.Member;
 import com.infrun.myrestfulservice.study.member.service.MemberJoinService;
@@ -30,10 +31,10 @@ public class MemberController {
     private MemberLoginService memberLoginService;
 
     @PostMapping("/join")
-    public CommonResponse createMember(@RequestBody MemberDto memberDto) {
+    public CommonResponse createMember(@RequestBody MemberJoinDto memberJoinDto) {
         CommonResponse commonResponse = new CommonResponse();
         try {
-            memberJoinService.joinMember(memberDto);
+            memberJoinService.joinMember(memberJoinDto);
         } catch (UserDuplicateException e) {
             commonResponse.setError(HttpStatus.BAD_REQUEST, e.getMessage());
         }
@@ -70,8 +71,8 @@ public class MemberController {
 
     @GetMapping
     public CommonResponse getAllMember() {
-        List<Member> members = memberService.getAllMember();
-        return new CommonResponse(members);
+        List<MemberDto> memberDtos = memberService.getAllMember();
+        return new CommonResponse(memberDtos);
     }
 
     @GetMapping("/{id}")
@@ -79,8 +80,8 @@ public class MemberController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Member member = memberService.getMemberById(id);
-            commonResponse.setData(member);
+            MemberDto memberDto = memberService.getMemberById(id);
+            commonResponse.setData(memberDto);
         } catch (UserNotFoundException e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -89,8 +90,16 @@ public class MemberController {
     }
 
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<Void> deleteMember(@PathVariable String memberId) {
-        memberService.deleteMember(memberId);
-        return ResponseEntity.noContent().build();
+    public CommonResponse deleteMember(@PathVariable String memberId) {
+        CommonResponse commonResponse = new CommonResponse();
+
+        try {
+            memberService.deleteMember(memberId);
+            commonResponse.setStatus(HttpStatus.NO_CONTENT.value());
+        } catch (Exception e) {
+            commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+
+        return commonResponse;
     }
 }

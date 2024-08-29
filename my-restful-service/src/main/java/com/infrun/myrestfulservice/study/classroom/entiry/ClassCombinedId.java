@@ -16,18 +16,4 @@ public class ClassCombinedId implements Serializable {
 
     private String memberId;
     private Integer classroomId;
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        ClassStaffId that = (ClassStaffId) o;
-//        return Objects.equals(memberId, that.memberId) &&
-//                Objects.equals(classroomId, that.classroomId);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(memberId, classroomId);
-//    }
 }

@@ -18,11 +18,11 @@ public class ClassStudent {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    @MapsId("memberId") // 복합키 맵핑
+    @MapsId("memberId")
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "classroom_id", nullable = false)
-    @MapsId("classroomId") // 복합키 맵핑
+    @MapsId("classroomId")
     private Classroom classroom;
 }

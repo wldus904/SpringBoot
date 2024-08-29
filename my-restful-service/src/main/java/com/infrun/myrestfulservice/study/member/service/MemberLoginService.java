@@ -6,6 +6,7 @@ import com.infrun.myrestfulservice.study.member.dto.MemberLoginDto;
 import com.infrun.myrestfulservice.study.member.dto.TokenDto;
 import com.infrun.myrestfulservice.study.member.entity.MemberRefreshToken;
 import com.infrun.myrestfulservice.study.member.entity.Member;
+import com.infrun.myrestfulservice.study.member.repository.MemberRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 public class MemberLoginService {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRefreshTokenService memberRefreshTokenService;
@@ -34,7 +36,8 @@ public class MemberLoginService {
             throw new UserNotFoundException("로그인 정보를 확인해주세요.");
         }
 
-        Member member = memberService.getMemberById(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다."));
         if (!passwordEncoder.matches(memberLoginDto.getPassword(), member.getPassword())) {
             throw new UserNotFoundException("비밀번호를 확인해주세요.");
         }
@@ -79,7 +82,8 @@ public class MemberLoginService {
         }
 
         String memberId = refreshToken.getMemberId();
-        Member member = memberService.getMemberById(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다."));
 
         TokenDto tokenDto = jwtTokenProvider.generateTokenDto(member.getPhone());
         memberRefreshTokenService.saveTokenByTokenDto(member.getMemberId(), tokenDto);

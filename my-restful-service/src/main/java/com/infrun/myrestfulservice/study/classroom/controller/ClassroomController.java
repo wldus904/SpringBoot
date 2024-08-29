@@ -39,8 +39,8 @@ public class ClassroomController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Optional<Classroom> classroom = classroomService.findClassroomById(classroomId);
-            commonResponse.setData(classroom);
+            ClassroomDto classroomDto = classroomService.findClassroomById(classroomId);
+            commonResponse.setData(classroomDto);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

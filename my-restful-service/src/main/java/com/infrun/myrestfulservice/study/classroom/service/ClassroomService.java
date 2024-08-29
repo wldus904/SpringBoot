@@ -3,6 +3,7 @@ package com.infrun.myrestfulservice.study.classroom.service;
 import com.infrun.myrestfulservice.study.classroom.dto.ClassroomDto;
 import com.infrun.myrestfulservice.study.classroom.entiry.Classroom;
 import com.infrun.myrestfulservice.study.classroom.repository.ClassroomRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,8 @@ public class ClassroomService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Classroom> findClassroomById (Integer classroomId) {
-        return classroomRepository.findById(classroomId);
+    public ClassroomDto findClassroomById (Integer classroomId) {
+        return ClassroomDto.toDto(classroomRepository.findById(classroomId)
+                .orElseThrow(() -> new EntityNotFoundException("Classroom not found with id: " + classroomId)));
     }
 }

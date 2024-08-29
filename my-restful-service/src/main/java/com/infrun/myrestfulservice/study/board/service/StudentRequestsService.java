@@ -29,7 +29,7 @@ public class StudentRequestsService {
     private BoardConfigType boardConfigType = BoardConfigType.STUDENT_REQUESTS;
 
     @Transactional
-    public StudentRequests saveStudentRequests (StudentRequestsDto studentRequestsDto) {
+    public StudentRequestsDto saveStudentRequests (StudentRequestsDto studentRequestsDto) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         BoardStatus boardStatus = BoardStatus.PUBLISHED;
         Board board = boardService.saveBoard(studentRequestsDto, boardConfig, boardStatus);
@@ -38,7 +38,7 @@ public class StudentRequestsService {
                 .board(board)
                 .requestsType(studentRequestsDto.getRequestsType())
                 .build();
-        return studentRequestsRepository.save(studentRequests);
+        return StudentRequestsDto.toDto(studentRequestsRepository.save(studentRequests));
     }
 
     public List<BoardDto> getStudentRequests () {
@@ -46,13 +46,13 @@ public class StudentRequestsService {
         return boardService.findAllBoard(boardConfig.getBoardConfigId());
     }
 
-    public Optional<Board> getStudentRequest (Integer boardId) {
+    public BoardDto getStudentRequest (Integer boardId) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         return boardService.findBoardById(boardId, boardConfig.getBoardConfigId());
     }
 
     @Transactional
-    public Board updateStudentRequest (BoardDto boardDto, Integer boardId) {
+    public BoardDto updateStudentRequest (BoardDto boardDto, Integer boardId) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         return boardService.updateBoard(boardId, boardDto, boardConfig.getBoardConfigId(), boardConfigType);
     }

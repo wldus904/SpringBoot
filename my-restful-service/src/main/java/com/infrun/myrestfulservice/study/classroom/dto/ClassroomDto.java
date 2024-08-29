@@ -34,7 +34,7 @@ public class ClassroomDto {
         List<ClassStaffDto> staffDtos = classroom.getClassStaff().stream()
                 .map(ClassStaffDto::toDto)
                 .collect(Collectors.toList());
-        classroomDto.setClassStudents(studentDtos);
+        classroomDto.setClassStaff(staffDtos);
 
         return classroomDto;
     }

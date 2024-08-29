@@ -1,6 +1,7 @@
 package com.infrun.myrestfulservice.study.board.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.infrun.myrestfulservice.study.board.entity.Board;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,5 +38,23 @@ public class BoardDto {
         this.refId = refId;
         this.regDate = regDate;
         this.modDate = modDate;
+    }
+
+    // 생성자 추가
+    public static BoardDto toDto(Board board) {
+        BoardDto boardDto = new BoardDto();
+
+        boardDto.setBoardConfigId(board.getBoardId());
+        boardDto.setBoardId(board.getBoardId());
+        boardDto.setBoardName(board.getBoardConfig().getTitle());
+        boardDto.setTitle(board.getTitle());
+        boardDto.setContent(board.getContent());
+        boardDto.setWriterMemberId(board.getWriterMemberId());
+        boardDto.setStatus(board.getStatus());
+        boardDto.setRefId(board.getRefId());
+        boardDto.setRegDate(board.getRegDate());
+        boardDto.setModDate(board.getModDate());
+
+        return boardDto;
     }
 }

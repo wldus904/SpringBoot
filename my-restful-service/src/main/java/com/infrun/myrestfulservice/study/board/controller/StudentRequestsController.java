@@ -37,8 +37,8 @@ public class StudentRequestsController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            List<BoardDto> boards = studentRequestsService.getStudentRequests();
-            commonResponse.setData(boards);
+            List<BoardDto> boardDtos = studentRequestsService.getStudentRequests();
+            commonResponse.setData(boardDtos);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
@@ -51,8 +51,8 @@ public class StudentRequestsController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Optional<Board> board = studentRequestsService.getStudentRequest(boardId);
-            commonResponse.setData(board);
+            BoardDto boardDto = studentRequestsService.getStudentRequest(boardId);
+            commonResponse.setData(boardDto);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
@@ -65,8 +65,8 @@ public class StudentRequestsController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Board board = studentRequestsService.updateStudentRequest(boardDto, boardId);
-            commonResponse.setData(board);
+            BoardDto resBoardDto = studentRequestsService.updateStudentRequest(boardDto, boardId);
+            commonResponse.setData(resBoardDto);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

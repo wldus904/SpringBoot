@@ -17,16 +17,16 @@ public class ClassStaff {
     @EmbeddedId
     private ClassCombinedId id;
 
+    @Column(name = "subject_code")
+    private String subjectCode;
+
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     @MapsId("memberId") // 복합키 맵핑
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "classroom_id")
+    @JoinColumn(name = "classroom_id", nullable = false)
     @MapsId("classroomId")
     private Classroom classroom;
-
-    @Column(name = "subject_code")
-    private String subjectCode;
 }

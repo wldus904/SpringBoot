@@ -1,6 +1,7 @@
 package com.infrun.myrestfulservice.study.member.service;
 
 import com.infrun.myrestfulservice.exception.UserNotFoundException;
+import com.infrun.myrestfulservice.study.member.dto.MemberDto;
 import com.infrun.myrestfulservice.study.member.entity.Member;
 import com.infrun.myrestfulservice.study.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class MemberService {
         return memberRepository.existsByMemberId(memberId);
     }
 
-    public Member getMember(String id, String name) {
+    public MemberDto getMember(String id, String name) {
         if (!id.isEmpty() && !name.isEmpty()) {
             return getMemberByMemberIdAndName(id, name);
         } else if (!id.isEmpty()) {
@@ -33,23 +35,23 @@ public class MemberService {
         }
     }
 
-    public List<Member> getAllMember() {
-        return memberRepository.findAll();
+    public List<MemberDto> getAllMember() {
+        return memberRepository.findAll().stream().map(MemberDto::toDto).collect(Collectors.toList());
     }
 
-    public Member getMemberById(String id) {
-        return memberRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다."));
+    public MemberDto getMemberById(String id) {
+        return MemberDto.toDto(memberRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다.")));
     }
 
-    public Member getMemberByName(String name) {
-        return memberRepository.findByName(name)
-                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다."));
+    public MemberDto getMemberByName(String name) {
+        return MemberDto.toDto(memberRepository.findByName(name)
+                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다.")));
     }
 
-    public Member getMemberByMemberIdAndName(String id, String name) {
-        return memberRepository.findByMemberIdAndName(id, name)
-                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다."));
+    public MemberDto getMemberByMemberIdAndName(String id, String name) {
+        return MemberDto.toDto(memberRepository.findByMemberIdAndName(id, name)
+                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다.")));
     }
 
     public void deleteMember(String memberId) {

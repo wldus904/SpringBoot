@@ -22,10 +22,11 @@ public class NoticeService {
     private final BoardConfigRepository boardConfigRepository;
 
     @Transactional
-    public Board saveNotice (BoardDto boardDto) {
+    public BoardDto saveNotice (BoardDto boardDto) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         BoardStatus boardStatus = BoardStatus.PUBLISHED;
-        return boardService.saveBoard(boardDto, boardConfig, boardStatus);
+        Board board = boardService.saveBoard(boardDto, boardConfig, boardStatus);
+        return BoardDto.toDto(board);
     }
 
     public List<BoardDto> findAllNotice () {
@@ -33,13 +34,13 @@ public class NoticeService {
         return boardService.findAllBoard(boardConfig.getBoardConfigId());
     }
 
-    public Optional<Board> findNoticeById (Integer boardId) {
+    public BoardDto findNoticeById (Integer boardId) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         return boardService.findBoardById(boardId, boardConfig.getBoardConfigId());
     }
 
     @Transactional
-    public Board updateNotice (Integer boardId, BoardDto boardDto) {
+    public BoardDto updateNotice (Integer boardId, BoardDto boardDto) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         return boardService.updateBoard(boardId, boardDto, boardConfig.getBoardConfigId(), boardConfigType);
     }

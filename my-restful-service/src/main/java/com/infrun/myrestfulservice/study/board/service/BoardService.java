@@ -40,18 +40,20 @@ public class BoardService {
         return boardRepository.findAllByBoardConfigId(boardConfigId);
     }
 
-    public Optional<Board> findBoardById (Integer boardId, Integer boardConfigId) {
-        return boardRepository.findByBoardIdAndBoardConfigId(boardId, boardConfigId);
+    public BoardDto findBoardById (Integer boardId, Integer boardConfigId) {
+        return BoardDto.toDto(
+                boardRepository.findByBoardIdAndBoardConfigId(boardId,boardConfigId)
+                        .orElseThrow(() -> new EntityNotFoundException("Board not found with id: " + boardId)));
     }
 
     @Transactional
-    public Board updateBoard (Integer boardId, BoardDto boardDto, Integer boardConfigId, BoardConfigType boardConfigType) {
-        Board board = findBoardById(boardId, boardConfigId)
+    public BoardDto updateBoard (Integer boardId, BoardDto boardDto, Integer boardConfigId, BoardConfigType boardConfigType) {
+        Board board = boardRepository.findByBoardIdAndBoardConfigId(boardId, boardConfigId)
                 .orElseThrow(() -> new EntityNotFoundException("Board not found with id: " + boardDto.getBoardId()));
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
 
         board.updateBoard(boardConfig, boardDto.getTitle(), boardDto.getContent(), boardDto.getStatus());
-        return boardRepository.save(board);
+        return BoardDto.toDto(boardRepository.save(board));
     }
 
     @Transactional

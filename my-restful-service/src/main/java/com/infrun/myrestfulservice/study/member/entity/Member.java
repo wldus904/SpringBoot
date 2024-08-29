@@ -32,6 +32,9 @@ public class Member {
     @Column(name="phone", nullable = false)
     private String phone;
 
+    @Column(name="grade", nullable = false)
+    private int grade;
+
     @Column(name="reg_date", nullable = false)
     private LocalDateTime regDate;
 
@@ -50,12 +53,13 @@ public class Member {
     }
 
     @Builder
-    public Member(String memberId, String password, String name, String address, String email, String phone) {
+    public Member(String memberId, String password, String name, String address, String email, String phone, int grade) {
         this.memberId = memberId;
         this.password = password;
         this.name = name;
         this.address = address;
         this.email = email;
         this.phone = phone;
+        this.grade = grade;
     }
 }
