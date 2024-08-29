@@ -29,7 +29,7 @@ public class NoticeService {
         return BoardDto.toDto(board);
     }
 
-    public List<BoardDto> findAllNotice () {
+    public List<BoardDto> findAllNotice (String searchWord) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         return boardService.findAllBoard(boardConfig.getBoardConfigId());
     }

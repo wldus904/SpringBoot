@@ -2,10 +2,12 @@ package com.infrun.myrestfulservice.study.board.service;
 
 import com.infrun.myrestfulservice.study.board.constant.BoardConfigType;
 import com.infrun.myrestfulservice.study.board.constant.BoardStatus;
+import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.entity.Board;
 import com.infrun.myrestfulservice.study.board.entity.BoardConfig;
 import com.infrun.myrestfulservice.study.board.repository.BoardConfigRepository;
+import com.infrun.myrestfulservice.study.board.repository.BoardDynamicRepository;
 import com.infrun.myrestfulservice.study.board.repository.BoardRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final BoardDynamicRepository boardDynamicRepository;
     private final BoardConfigRepository boardConfigRepository;
 
     @Transactional
@@ -36,7 +39,8 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public List<BoardDto> findAllBoard (Integer boardConfigId) {
+    public List<BoardDto> findAllBoard (Integer boardConfigId) { // , BoardCondition boardCondition
+        // TODO boardDynamicRepository로 바꾸고 boardCondition, pageable 넣어야함
         return boardRepository.findAllByBoardConfigId(boardConfigId);
     }
 

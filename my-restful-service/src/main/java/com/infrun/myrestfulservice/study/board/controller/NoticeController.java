@@ -4,6 +4,7 @@ import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.service.NoticeService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +31,11 @@ public class NoticeController {
     }
 
     @GetMapping("/notices")
-    public CommonResponse getAllNotice() {
+    public CommonResponse getAllNotice(@RequestParam String searchWord) {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            List<BoardDto> boardDtos = noticeService.findAllNotice();
+            List<BoardDto> boardDtos = noticeService.findAllNotice(searchWord);
             commonResponse.setData(boardDtos);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());

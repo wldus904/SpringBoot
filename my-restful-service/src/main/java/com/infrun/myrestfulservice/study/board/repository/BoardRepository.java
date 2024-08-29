@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Integer> {
+
     @Query("SELECT new com.infrun.myrestfulservice.study.board.dto.BoardDto(" +
             "bc.boardConfigId, b.boardId, bc.title as boardName, b.title as boardTitle, " +
             "b.content, b.writerMemberId, b.status, b.refId, b.regDate, b.modDate) " +
