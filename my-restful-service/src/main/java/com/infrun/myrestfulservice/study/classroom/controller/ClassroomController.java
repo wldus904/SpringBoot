@@ -1,15 +1,14 @@
 package com.infrun.myrestfulservice.study.classroom.controller;
 
+import com.infrun.myrestfulservice.study.classroom.dto.ClassroomCondition;
 import com.infrun.myrestfulservice.study.classroom.dto.ClassroomDto;
 import com.infrun.myrestfulservice.study.classroom.entiry.Classroom;
 import com.infrun.myrestfulservice.study.classroom.service.ClassroomService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,11 +20,12 @@ public class ClassroomController {
     private ClassroomService classroomService;
 
     @GetMapping
-    private CommonResponse getClassrooms() {
+    private CommonResponse getClassrooms(@ModelAttribute ClassroomCondition condition) {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            List<ClassroomDto> classrooms = classroomService.findAllClassroom();
+//            Page<ClassroomDto> classrooms = classroomService.findAllClassroom(condition);
+            List<ClassroomDto> classrooms = classroomService.findAllClassroom(condition);
             commonResponse.setData(classrooms);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

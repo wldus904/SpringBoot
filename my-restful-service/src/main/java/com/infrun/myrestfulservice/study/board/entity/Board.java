@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "board")
 public class Board {
-
-//    board_config_id = 0 인것만 가져오기
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
