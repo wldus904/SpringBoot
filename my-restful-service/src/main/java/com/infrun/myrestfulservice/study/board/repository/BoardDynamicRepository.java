@@ -8,9 +8,12 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static com.infrun.myrestfulservice.study.board.entity.QBoard.board;
 import static com.infrun.myrestfulservice.study.board.entity.QBoardConfig.boardConfig;
@@ -20,38 +23,45 @@ import static com.infrun.myrestfulservice.study.board.entity.QBoardConfig.boardC
 public class BoardDynamicRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
-    public Page<Board> findAllByBoardConfigId(Integer boardConfigId, BoardCondition condition, Pageable pageable) {
-        JPAQuery<Board> selectQuery = fetchSelect(condition)
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset());
+    public Page<Board> findAllByBoardConfigId(BoardCondition condition, Integer boardConfigId) {
+        long count = fetchCount(condition, boardConfigId);
+        int page = (condition.getPage() - 1) * condition.getSize();
+        JPAQuery<Board> selectQuery = fetchSelect(condition, boardConfigId)
+                .limit(condition.getSize())
+                .offset(page);
+        List<Board> content = selectQuery.fetch();
+        Pageable pageable = PageRequest.of(page, condition.getSize());
 
-        long count = fetchCount(condition);
-
-        return PageableExecutionUtils.getPage(selectQuery.fetch(), pageable, () -> count);
+        return PageableExecutionUtils.getPage(content, pageable, () -> count);
     }
 
-    private JPAQuery<Board> fetchSelect(BoardCondition condition) {
+    private JPAQuery<Board> fetchSelect(BoardCondition condition, Integer boardConfigId) {
         return jpaQueryFactory
                 .selectFrom(board)
                 .join(board.boardConfig, boardConfig)
                 .where(
-                        containTitle(condition)
+                    containTitle(condition),
+                    eqBoardConfigId(boardConfigId)
                 ).orderBy(board.regDate.desc());
     }
 
-    private long fetchCount(BoardCondition condition) {
-        JPAQuery<Board> fetchSelect = fetchSelect(condition);
+    private long fetchCount(BoardCondition condition, Integer boardConfigId) {
+        JPAQuery<Board> fetchSelect = fetchSelect(condition, boardConfigId);
         JPAQuery<Long> countQuery = fetchSelect.select(board.count());
         Long totalCount = countQuery.fetchOne();
         return totalCount == null ? 0 : totalCount;
     }
 
     private BooleanExpression containTitle(BoardCondition condition) {
-        String title = condition.getSearchWord();
-        if (StringUtils.isEmpty(title)) {
+        String title = condition.getTitle();
+        if (StringUtils.isBlank(title)) {
             return null;
         }
 
         return board.title.contains(title);
+    }
+
+    private BooleanExpression eqBoardConfigId(Integer boardConfigId) {
+        return board.boardConfig.boardConfigId.eq(boardConfigId);
     }
 }

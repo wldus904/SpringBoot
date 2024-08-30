@@ -11,11 +11,13 @@ import com.infrun.myrestfulservice.study.board.repository.BoardDynamicRepository
 import com.infrun.myrestfulservice.study.board.repository.BoardRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,9 +41,9 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public List<BoardDto> findAllBoard (Integer boardConfigId) { // , BoardCondition boardCondition
-        // TODO boardDynamicRepository로 바꾸고 boardCondition, pageable 넣어야함
-        return boardRepository.findAllByBoardConfigId(boardConfigId);
+    public Page<BoardDto> findAllBoard (BoardCondition boardCondition, Integer boardConfigId) {
+        Page<Board> boardPages = boardDynamicRepository.findAllByBoardConfigId(boardCondition, boardConfigId);
+        return boardPages.map(BoardDto::toDto);
     }
 
     public BoardDto findBoardById (Integer boardId, Integer boardConfigId) {

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class BoardCondition {
-    private String searchWord;
-    private int page;
-    private int size;
+    private String title;
+    private int size = 10;
+    private int page = 1;
 }

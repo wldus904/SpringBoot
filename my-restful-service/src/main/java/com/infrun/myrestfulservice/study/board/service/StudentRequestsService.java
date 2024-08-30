@@ -2,6 +2,7 @@ package com.infrun.myrestfulservice.study.board.service;
 
 import com.infrun.myrestfulservice.study.board.constant.BoardConfigType;
 import com.infrun.myrestfulservice.study.board.constant.BoardStatus;
+import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.dto.StudentRequestsDto;
 import com.infrun.myrestfulservice.study.board.entity.Board;
@@ -12,6 +13,7 @@ import com.infrun.myrestfulservice.study.board.repository.BoardRepository;
 import com.infrun.myrestfulservice.study.board.repository.StudentRequestsRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,9 +43,9 @@ public class StudentRequestsService {
         return StudentRequestsDto.toDto(studentRequestsRepository.save(studentRequests));
     }
 
-    public List<BoardDto> getStudentRequests () {
+    public Page<BoardDto> getStudentRequests (BoardCondition condition) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
-        return boardService.findAllBoard(boardConfig.getBoardConfigId());
+        return boardService.findAllBoard(condition, boardConfig.getBoardConfigId());
     }
 
     public BoardDto getStudentRequest (Integer boardId) {

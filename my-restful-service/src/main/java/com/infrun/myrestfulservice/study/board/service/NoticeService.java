@@ -2,11 +2,13 @@ package com.infrun.myrestfulservice.study.board.service;
 
 import com.infrun.myrestfulservice.study.board.constant.BoardStatus;
 import com.infrun.myrestfulservice.study.board.constant.BoardConfigType;
+import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.entity.Board;
 import com.infrun.myrestfulservice.study.board.entity.BoardConfig;
 import com.infrun.myrestfulservice.study.board.repository.BoardConfigRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +31,9 @@ public class NoticeService {
         return BoardDto.toDto(board);
     }
 
-    public List<BoardDto> findAllNotice (String searchWord) {
+    public Page<BoardDto> findAllNotice (BoardCondition boardCondition) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
-        return boardService.findAllBoard(boardConfig.getBoardConfigId());
+        return boardService.findAllBoard(boardCondition, boardConfig.getBoardConfigId());
     }
 
     public BoardDto findNoticeById (Integer boardId) {

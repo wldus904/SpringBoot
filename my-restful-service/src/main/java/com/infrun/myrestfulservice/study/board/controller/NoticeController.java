@@ -1,9 +1,11 @@
 package com.infrun.myrestfulservice.study.board.controller;
 
+import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.service.NoticeService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +33,11 @@ public class NoticeController {
     }
 
     @GetMapping("/notices")
-    public CommonResponse getAllNotice(@RequestParam String searchWord) {
+    public CommonResponse getAllNotice(@ModelAttribute BoardCondition condition) {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            List<BoardDto> boardDtos = noticeService.findAllNotice(searchWord);
+            Page<BoardDto> boardDtos = noticeService.findAllNotice(condition);
             commonResponse.setData(boardDtos);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());

@@ -1,11 +1,13 @@
 package com.infrun.myrestfulservice.study.board.controller;
 
+import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.dto.StudentRequestsDto;
 import com.infrun.myrestfulservice.study.board.entity.Board;
 import com.infrun.myrestfulservice.study.board.service.StudentRequestsService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +35,11 @@ public class StudentRequestsController {
     }
 
     @GetMapping("/student-requests")
-    public CommonResponse getStudentRequests () {
+    public CommonResponse getStudentRequests (@ModelAttribute BoardCondition condition) {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            List<BoardDto> boardDtos = studentRequestsService.getStudentRequests();
+            Page<BoardDto> boardDtos = studentRequestsService.getStudentRequests(condition);
             commonResponse.setData(boardDtos);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
