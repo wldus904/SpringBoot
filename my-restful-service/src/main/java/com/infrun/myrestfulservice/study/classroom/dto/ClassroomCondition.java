@@ -5,10 +5,12 @@ import lombok.Data;
 @Data
 public class ClassroomCondition {
     private int year;
-    private int grad;
+    private int grade;
     private int classSection;
-    private String homeroomTeacher;
-    private String subjectTeacher;
+    private String studentName;
+    private String homeroomTeacherName;
+    private String subjectTeacherName;
+    private String subjectCode;
     private int size = 10;
     private int page = 1;
 }

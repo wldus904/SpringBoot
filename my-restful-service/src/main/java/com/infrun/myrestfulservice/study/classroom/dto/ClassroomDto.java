@@ -23,6 +23,7 @@ public class ClassroomDto {
         ClassroomDto classroomDto = new ClassroomDto();
         classroomDto.setClassroomId(classroom.getClassroomId());
         classroomDto.setYear(classroom.getYear());
+        classroomDto.setGrade(classroom.getGrade());
         classroomDto.setClassSection(classroom.getClassSection());
         classroomDto.setHomeroomTeacher(classroom.getHomeroomTeacher());
 

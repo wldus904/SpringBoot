@@ -24,8 +24,7 @@ public class ClassroomController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-//            Page<ClassroomDto> classrooms = classroomService.findAllClassroom(condition);
-            List<ClassroomDto> classrooms = classroomService.findAllClassroom(condition);
+            Page<ClassroomDto> classrooms = classroomService.findAllClassroom(condition);
             commonResponse.setData(classrooms);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
