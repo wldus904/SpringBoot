@@ -18,8 +18,6 @@ import java.util.List;
 import static com.infrun.myrestfulservice.study.classroom.entiry.QClassroom.classroom;
 import static com.infrun.myrestfulservice.study.classroom.entiry.QClassStaff.classStaff;
 import static com.infrun.myrestfulservice.study.classroom.entiry.QClassStudent.classStudent;
-import static com.infrun.myrestfulservice.study.member.entity.QMember.member;
-
 
 @Repository
 @RequiredArgsConstructor
