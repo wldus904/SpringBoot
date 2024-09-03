@@ -9,7 +9,8 @@ import java.time.LocalDate;
 
 @Data
 public class ExamSubjectDto {
-    private Exam exam;
+    private Integer examSubjectId;
+    private ExamDto examDto;
     private SubjectDto subject;
     private String tester;
     private LocalDate examDate;
@@ -19,7 +20,8 @@ public class ExamSubjectDto {
 
     public static ExamSubjectDto toDto(ExamSubject examSubject) {
         ExamSubjectDto examSubjectDto = new ExamSubjectDto();
-        examSubjectDto.setExam(examSubject.getExam());
+        examSubjectDto.setExamSubjectId(examSubject.getExamSubjectId());
+        examSubjectDto.setExamDto(ExamDto.toDto(examSubject.getExam()));
         examSubjectDto.setSubject(SubjectDto.toDto(examSubject.getSubject()));
         examSubjectDto.setTester(examSubject.getTester());
         examSubjectDto.setExamDate(examSubject.getExamDate());

@@ -10,17 +10,20 @@ import com.infrun.myrestfulservice.study.subject.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ExamSubjectService {
     private final ExamSubjectRepository examSubjectRepository;
     private final ExamRepository examRepository;
     private final SubjectRepository subjectRepository;
 
+    @Transactional
     public ExamSubjectDto saveExamSubject(ExamSubjectDto examSubjectDto) {
         Exam exam = examRepository
-                .findById(examSubjectDto.getExam().getExamId())
+                .findById(examSubjectDto.getExamDto().getExamId())
                 .orElseThrow(() -> new BadCredentialsException("잘못된 시험 정보입니다."));
 
         Subject subject = subjectRepository
@@ -38,5 +41,10 @@ public class ExamSubjectService {
                 .build();
 
         return ExamSubjectDto.toDto(examSubjectRepository.save(examSubject));
+    }
+
+    @Transactional
+    public void deleteExamSubject(Integer examSubjectId) {
+        examSubjectRepository.deleteById(examSubjectId);
     }
 }

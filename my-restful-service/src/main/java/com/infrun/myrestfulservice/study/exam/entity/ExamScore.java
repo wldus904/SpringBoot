@@ -2,6 +2,7 @@ package com.infrun.myrestfulservice.study.exam.entity;
 
 import com.infrun.myrestfulservice.study.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,10 +22,14 @@ public class ExamScore {
     private int score;
 
     @Column(name = "reg_date")
-    private LocalDateTime reg_date;
+    private LocalDateTime regDate;
 
     @Column(name = "mod_date")
-    private LocalDateTime mod_date;
+    private LocalDateTime modDate;
+
+    @ManyToOne
+    @JoinColumn(name = "exam_id", nullable = false)
+    private Exam exam;
 
     @ManyToOne
     @JoinColumn(name = "exam_subject_id", nullable = false)
@@ -33,4 +38,26 @@ public class ExamScore {
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @PrePersist
+    protected void onCreate() {
+        regDate = LocalDateTime.now();
+        modDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        modDate = LocalDateTime.now();
+    }
+
+    @Builder
+    public ExamScore (Integer examScoreId, Exam exam, ExamSubject examSubject, Member member, int score, LocalDateTime regDate, LocalDateTime modDate) {
+        this.examScoreId = examScoreId;
+        this.exam = exam;
+        this.examSubject = examSubject;
+        this.member = member;
+        this.score = score;
+        this.regDate = regDate;
+        this.modDate = modDate;
+    }
 }
