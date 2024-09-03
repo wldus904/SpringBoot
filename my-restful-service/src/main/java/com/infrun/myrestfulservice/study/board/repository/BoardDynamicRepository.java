@@ -25,10 +25,10 @@ public class BoardDynamicRepository {
 
     public Page<Board> findAllByBoardConfigId(BoardCondition condition, Integer boardConfigId) {
         long count = fetchCount(condition, boardConfigId);
-        int page = (condition.getPage() - 1) * condition.getSize();
+        int page = condition.getPage() - 1;
         JPAQuery<Board> selectQuery = fetchSelect(condition, boardConfigId)
                 .limit(condition.getSize())
-                .offset(page);
+                .offset(page * condition.getSize());
         List<Board> content = selectQuery.fetch();
         Pageable pageable = PageRequest.of(page, condition.getSize());
 
@@ -39,6 +39,7 @@ public class BoardDynamicRepository {
         return jpaQueryFactory
                 .selectFrom(board)
                 .join(board.boardConfig, boardConfig)
+                .join(board.member)
                 .where(
                     containTitle(condition),
                     eqBoardConfigId(boardConfigId)

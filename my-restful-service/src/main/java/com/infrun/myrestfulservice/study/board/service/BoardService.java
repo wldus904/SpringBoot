@@ -9,6 +9,8 @@ import com.infrun.myrestfulservice.study.board.entity.BoardConfig;
 import com.infrun.myrestfulservice.study.board.repository.BoardConfigRepository;
 import com.infrun.myrestfulservice.study.board.repository.BoardDynamicRepository;
 import com.infrun.myrestfulservice.study.board.repository.BoardRepository;
+import com.infrun.myrestfulservice.study.member.entity.Member;
+import com.infrun.myrestfulservice.study.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,14 +28,19 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardDynamicRepository boardDynamicRepository;
     private final BoardConfigRepository boardConfigRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public Board saveBoard (BoardDto boardDto, BoardConfig boardConfig, BoardStatus boardStatus) {
+        Member member = memberRepository
+                .findById(boardDto.getWriterMemberId())
+                .orElseThrow(() -> new EntityNotFoundException("Board not found with id: " + boardDto.getWriterMemberId()));
+
         Board board = Board.builder()
                 .boardConfig(boardConfig)
                 .title(boardDto.getTitle())
                 .content(boardDto.getContent())
-                .writerMemberId(boardDto.getWriterMemberId())
+                .member(member)
                 .status(boardStatus.getCode())
                 .refId(boardDto.getRefId())
                 .build();

@@ -11,13 +11,14 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
-    @Query("SELECT new com.infrun.myrestfulservice.study.board.dto.BoardDto(" +
-            "bc.boardConfigId, b.boardId, bc.title as boardName, b.title as boardTitle, " +
-            "b.content, b.writerMemberId, b.status, b.refId, b.regDate, b.modDate) " +
-            "FROM Board b " +
-            "JOIN b.boardConfig bc " +
-            "WHERE bc.boardConfigId = :boardConfigId")  // boardConfigId로 필터링
-    List<BoardDto> findAllByBoardConfigId(Integer boardConfigId);
+//    @Query("SELECT new com.infrun.myrestfulservice.study.board.dto.BoardDto(" +
+//            "bc.boardConfigId, b.boardId, bc.title as boardName, b.title as boardTitle, " +
+//            "b.content, b.writerMemberId, b.status, b.refId, b.regDate, b.modDate) " +
+//            "FROM Board b " +
+//            "JOIN b.boardConfig bc " +
+//            "JOIN b.member bm " +
+//            "WHERE bc.boardConfigId = :boardConfigId")  // boardConfigId로 필터링
+//    List<BoardDto> findAllByBoardConfigId(Integer boardConfigId);
 
     @Query("SELECT b FROM Board b JOIN b.boardConfig bc " +
             "WHERE b.boardId = :boardId AND bc.boardConfigId = :boardConfigId")

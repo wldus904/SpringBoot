@@ -1,5 +1,6 @@
 package com.infrun.myrestfulservice.study.board.entity;
 
+import com.infrun.myrestfulservice.study.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,9 +24,6 @@ public class Board {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "writer_member_id")
-    private String writerMemberId;
-
     @Column(name = "status")
     private int status;
 
@@ -45,6 +43,10 @@ public class Board {
     @OneToOne(mappedBy = "board")
     private StudentRequests studentRequests;
 
+    @OneToOne
+    @JoinColumn(name = "writer_member_id", referencedColumnName = "member_id", nullable = false)
+    private Member member;
+
     @PrePersist
     protected void onCreated() {
         regDate = LocalDateTime.now();
@@ -57,11 +59,11 @@ public class Board {
     }
 
     @Builder
-    public Board(BoardConfig boardConfig, String title, String content, String writerMemberId, int status, String refId) {
+    public Board(BoardConfig boardConfig, String title, String content, Member member, int status, String refId) {
         this.boardConfig = boardConfig;
         this.title = title;
         this.content = content;
-        this.writerMemberId = writerMemberId;
+        this.member = member;
         this.status = status;
         this.refId = refId;
     }
