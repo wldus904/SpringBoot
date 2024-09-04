@@ -37,7 +37,7 @@ public class MemberLoginService {
         }
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("해당 정보를 찾을 수 없습니다."));
         if (!passwordEncoder.matches(memberLoginDto.getPassword(), member.getPassword())) {
             throw new UserNotFoundException("비밀번호를 확인해주세요.");
         }
@@ -83,7 +83,7 @@ public class MemberLoginService {
 
         String memberId = refreshToken.getMemberId();
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
 
         TokenDto tokenDto = jwtTokenProvider.generateTokenDto(member.getPhone());
         memberRefreshTokenService.saveTokenByTokenDto(member.getMemberId(), tokenDto);

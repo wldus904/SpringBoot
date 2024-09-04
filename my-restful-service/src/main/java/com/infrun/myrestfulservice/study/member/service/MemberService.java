@@ -41,17 +41,17 @@ public class MemberService {
 
     public MemberDto getMemberById(String id) {
         return MemberDto.toDto(memberRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다.")));
+                .orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다.")));
     }
 
     public MemberDto getMemberByName(String name) {
         return MemberDto.toDto(memberRepository.findByName(name)
-                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다.")));
+                .orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다.")));
     }
 
     public MemberDto getMemberByMemberIdAndName(String id, String name) {
         return MemberDto.toDto(memberRepository.findByMemberIdAndName(id, name)
-                .orElseThrow(() -> new UserNotFoundException("해당 학생를 찾을 수 없습니다.")));
+                .orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다.")));
     }
 
     public void deleteMember(String memberId) {

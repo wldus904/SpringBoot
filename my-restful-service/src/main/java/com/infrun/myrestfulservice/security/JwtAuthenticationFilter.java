@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .orElseThrow(() -> new AccessDeniedException("잘못된 요청입니다."));
 
         if (!StringUtils.isEmpty(accessToken)) {
-            // 토큰이 유효하지 않은 경우 exception 발생l
+            // 토큰이 유효하지 않은 경우 exception 발생
             Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
