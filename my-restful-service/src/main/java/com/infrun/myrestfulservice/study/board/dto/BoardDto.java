@@ -27,23 +27,4 @@ public class BoardDto {
     private String refId;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
-
-    // 생성자 추가
-    public static BoardDto toDto(Board board) {
-        BoardDto boardDto = new BoardDto();
-
-        boardDto.setBoardConfigId(board.getBoardId());
-        boardDto.setBoardId(board.getBoardId());
-        boardDto.setBoardName(board.getBoardConfig().getTitle());
-        boardDto.setTitle(board.getTitle());
-        boardDto.setContent(board.getContent());
-        boardDto.setWriterMemberId(board.getMember().getMemberId());
-        boardDto.setWriterName(board.getMember().getName());
-        boardDto.setStatus(board.getStatus());
-        boardDto.setRefId(board.getRefId());
-        boardDto.setRegDate(board.getRegDate());
-        boardDto.setModDate(board.getModDate());
-
-        return boardDto;
-    }
 }

@@ -1,6 +1,5 @@
 package com.infrun.myrestfulservice.study.board.entity;
 
-import com.infrun.myrestfulservice.study.board.dto.StudentRequestsDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

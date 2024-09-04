@@ -4,6 +4,7 @@ import com.infrun.myrestfulservice.study.board.constant.BoardStatus;
 import com.infrun.myrestfulservice.study.board.constant.BoardConfigType;
 import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
+import com.infrun.myrestfulservice.study.board.dto.NoticeDto;
 import com.infrun.myrestfulservice.study.board.entity.Board;
 import com.infrun.myrestfulservice.study.board.entity.BoardConfig;
 import com.infrun.myrestfulservice.study.board.repository.BoardConfigRepository;
@@ -11,9 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,27 +22,28 @@ public class NoticeService {
     private final BoardConfigRepository boardConfigRepository;
 
     @Transactional
-    public BoardDto saveNotice (BoardDto boardDto) {
+    public NoticeDto saveNotice (BoardDto boardDto) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         BoardStatus boardStatus = BoardStatus.PUBLISHED;
         Board board = boardService.saveBoard(boardDto, boardConfig, boardStatus);
-        return BoardDto.toDto(board);
+        return NoticeDto.toDto(board);
     }
 
-    public Page<BoardDto> findAllNotice (BoardCondition boardCondition) {
+    public Page<NoticeDto> findAllNotice (BoardCondition boardCondition) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
-        return boardService.findAllBoard(boardCondition, boardConfig.getBoardConfigId());
+        Page<Board> boardPages = boardService.findAllBoard(boardCondition, boardConfig.getBoardConfigId());
+        return boardPages.map(NoticeDto::toDto);
     }
 
-    public BoardDto findNoticeById (Integer boardId) {
+    public NoticeDto findNoticeById (Integer boardId) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
-        return boardService.findBoardById(boardId, boardConfig.getBoardConfigId());
+        return NoticeDto.toDto(boardService.findBoardById(boardId, boardConfig.getBoardConfigId()));
     }
 
     @Transactional
-    public BoardDto updateNotice (Integer boardId, BoardDto boardDto) {
+    public NoticeDto updateNotice (Integer boardId, BoardDto boardDto) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
-        return boardService.updateBoard(boardId, boardDto, boardConfig.getBoardConfigId(), boardConfigType);
+        return NoticeDto.toDto(boardService.updateBoard(boardId, boardDto, boardConfig.getBoardConfigId(), boardConfigType));
     }
 
     @Transactional

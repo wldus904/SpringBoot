@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class BoardCondition {
     private String title;
+    private String writerName;
     private int size = 10;
     private int page = 1;
 }

@@ -17,6 +17,8 @@ import java.util.List;
 
 import static com.infrun.myrestfulservice.study.board.entity.QBoard.board;
 import static com.infrun.myrestfulservice.study.board.entity.QBoardConfig.boardConfig;
+import static com.infrun.myrestfulservice.study.member.entity.QMember.member;
+import static com.infrun.myrestfulservice.study.board.entity.QStudentRequests.studentRequests;
 
 @Repository
 @RequiredArgsConstructor
@@ -39,10 +41,12 @@ public class BoardDynamicRepository {
         return jpaQueryFactory
                 .selectFrom(board)
                 .join(board.boardConfig, boardConfig)
-                .join(board.member)
+                .join(board.member, member)
+                .leftJoin(board.studentRequests, studentRequests)
                 .where(
                     containTitle(condition),
-                    eqBoardConfigId(boardConfigId)
+                    eqBoardConfigId(boardConfigId),
+                    containWriterName(condition)
                 ).orderBy(board.regDate.desc());
     }
 
@@ -60,6 +64,15 @@ public class BoardDynamicRepository {
         }
 
         return board.title.contains(title);
+    }
+
+    private BooleanExpression containWriterName(BoardCondition condition) {
+        String writerName = condition.getWriterName();
+        if (StringUtils.isBlank(writerName)) {
+            return null;
+        }
+
+        return member.name.contains(writerName);
     }
 
     private BooleanExpression eqBoardConfigId(Integer boardConfigId) {

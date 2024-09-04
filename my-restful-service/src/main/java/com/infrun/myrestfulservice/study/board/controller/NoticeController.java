@@ -2,6 +2,7 @@ package com.infrun.myrestfulservice.study.board.controller;
 
 import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
+import com.infrun.myrestfulservice.study.board.dto.NoticeDto;
 import com.infrun.myrestfulservice.study.board.service.NoticeService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class NoticeController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Page<BoardDto> boardDtos = noticeService.findAllNotice(condition);
-            commonResponse.setData(boardDtos);
+            Page<NoticeDto> noticeDtos = noticeService.findAllNotice(condition);
+            commonResponse.setData(noticeDtos);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -51,8 +52,8 @@ public class NoticeController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            BoardDto boardDto = noticeService.findNoticeById(boardId);
-            commonResponse.setData(boardDto);
+            NoticeDto noticeDto = noticeService.findNoticeById(boardId);
+            commonResponse.setData(noticeDto);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -65,8 +66,8 @@ public class NoticeController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            BoardDto resBoardDto = noticeService.updateNotice(boardId, boardDto);
-            commonResponse.setData(resBoardDto);
+            NoticeDto resNoticeDto = noticeService.updateNotice(boardId, boardDto);
+            commonResponse.setData(resNoticeDto);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

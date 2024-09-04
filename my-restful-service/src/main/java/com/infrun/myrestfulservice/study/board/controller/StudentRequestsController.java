@@ -2,8 +2,7 @@ package com.infrun.myrestfulservice.study.board.controller;
 
 import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
-import com.infrun.myrestfulservice.study.board.dto.StudentRequestsDto;
-import com.infrun.myrestfulservice.study.board.entity.Board;
+import com.infrun.myrestfulservice.study.board.dto.StudentRequestDto;
 import com.infrun.myrestfulservice.study.board.service.StudentRequestsService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,11 @@ public class StudentRequestsController {
     private StudentRequestsService studentRequestsService;
 
     @PostMapping("/student-request")
-    public CommonResponse saveStudentRequest (@RequestBody StudentRequestsDto studentRequestsDto) {
+    public CommonResponse saveStudentRequest (@RequestBody StudentRequestDto studentRequestDto) {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            studentRequestsService.saveStudentRequests(studentRequestsDto);
+            studentRequestsService.saveStudentRequests(studentRequestDto);
             commonResponse.setStatus(HttpStatus.OK.value());
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -39,8 +38,8 @@ public class StudentRequestsController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Page<BoardDto> boardDtos = studentRequestsService.getStudentRequests(condition);
-            commonResponse.setData(boardDtos);
+            Page<StudentRequestDto> StudentRequestDtos = studentRequestsService.getStudentRequests(condition);
+            commonResponse.setData(StudentRequestDtos);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

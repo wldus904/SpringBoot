@@ -48,25 +48,23 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public Page<BoardDto> findAllBoard (BoardCondition boardCondition, Integer boardConfigId) {
-        Page<Board> boardPages = boardDynamicRepository.findAllByBoardConfigId(boardCondition, boardConfigId);
-        return boardPages.map(BoardDto::toDto);
+    public Page<Board> findAllBoard (BoardCondition boardCondition, Integer boardConfigId) {
+        return boardDynamicRepository.findAllByBoardConfigId(boardCondition, boardConfigId);
     }
 
-    public BoardDto findBoardById (Integer boardId, Integer boardConfigId) {
-        return BoardDto.toDto(
-                boardRepository.findByBoardIdAndBoardConfigId(boardId,boardConfigId)
-                        .orElseThrow(() -> new EntityNotFoundException("Board not found with id: " + boardId)));
+    public Board findBoardById (Integer boardId, Integer boardConfigId) {
+        return boardRepository.findByBoardIdAndBoardConfigId(boardId,boardConfigId)
+                .orElseThrow(() -> new EntityNotFoundException("Board not found with id: " + boardId));
     }
 
     @Transactional
-    public BoardDto updateBoard (Integer boardId, BoardDto boardDto, Integer boardConfigId, BoardConfigType boardConfigType) {
+    public Board updateBoard (Integer boardId, BoardDto boardDto, Integer boardConfigId, BoardConfigType boardConfigType) {
         Board board = boardRepository.findByBoardIdAndBoardConfigId(boardId, boardConfigId)
                 .orElseThrow(() -> new EntityNotFoundException("Board not found with id: " + boardDto.getBoardId()));
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
 
         board.updateBoard(boardConfig, boardDto.getTitle(), boardDto.getContent(), boardDto.getStatus());
-        return BoardDto.toDto(boardRepository.save(board));
+        return boardRepository.save(board);
     }
 
     @Transactional
