@@ -22,22 +22,17 @@ public class ExamSubjectService {
 
     @Transactional
     public ExamSubjectDto saveExamSubject(ExamSubjectDto examSubjectDto) {
-        Exam exam = examRepository
-                .findById(examSubjectDto.getExamDto().getExamId())
-                .orElseThrow(() -> new BadCredentialsException("잘못된 시험 정보입니다."));
+//        Exam exam = examRepository
+//                .findById(examSubjectDto.getExamDto().getExamId())
+//                .orElseThrow(() -> new BadCredentialsException("잘못된 시험 정보입니다."));
 
         Subject subject = subjectRepository
                 .findById(examSubjectDto.getSubject().getSubjectCode())
                 .orElseThrow(() -> new BadCredentialsException("잘못된 과목 코드입니다."));
 
         ExamSubject examSubject = ExamSubject.builder()
-                .exam(exam)
+                .examId(examSubjectDto.getExamId())
                 .subject(subject)
-                .tester(examSubjectDto.getTester())
-                .examDate(examSubjectDto.getExamDate())
-                .examOrder(examSubjectDto.getExamOrder())
-                .examDurationMinute(examSubjectDto.getExamDurationMinute())
-                .grade(examSubjectDto.getGrade())
                 .build();
 
         return ExamSubjectDto.toDto(examSubjectRepository.save(examSubject));

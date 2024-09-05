@@ -2,6 +2,7 @@ package com.infrun.myrestfulservice.study.classroom.service;
 
 import com.infrun.myrestfulservice.study.classroom.dto.ClassroomCondition;
 import com.infrun.myrestfulservice.study.classroom.dto.ClassroomDto;
+import com.infrun.myrestfulservice.study.classroom.dto.GradeClassSectionDto;
 import com.infrun.myrestfulservice.study.classroom.entiry.Classroom;
 import com.infrun.myrestfulservice.study.classroom.repository.ClassroomDynamicRepository;
 import com.infrun.myrestfulservice.study.classroom.repository.ClassroomRepository;
@@ -20,6 +21,11 @@ import java.util.stream.Collectors;
 public class ClassroomService {
     private final ClassroomRepository classroomRepository;
     private final ClassroomDynamicRepository classroomDynamicRepository;
+
+    public List<GradeClassSectionDto> findGradeClassSection (ClassroomCondition condition) {
+        List<Classroom> classrooms = classroomDynamicRepository.findGradeAndClassSection(condition);
+        return classrooms.stream().map(GradeClassSectionDto::toDto).collect(Collectors.toList());
+    }
 
     public Page<ClassroomDto> findAllClassroom (ClassroomCondition condition) {
         Page<Classroom> classrooms = classroomDynamicRepository.findAll(condition);

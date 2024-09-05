@@ -1,5 +1,6 @@
 package com.infrun.myrestfulservice.study.exam.entity;
 
+import com.infrun.myrestfulservice.study.classroom.entiry.Classroom;
 import com.infrun.myrestfulservice.study.exam.dto.ExamDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -19,11 +20,18 @@ public class Exam {
     @Column(name = "exam_id")
     private Integer examId;
 
+    @Column(name = "year")
+    private int year;
+
     @Column(name = "semester")
     private int semester;
 
     @Column(name = "title")
     private String title;
+
+    @OneToOne
+    @JoinColumn(name = "classroom_id")
+    private Classroom classroom;
 
     @Column(name = "reg_date")
     private LocalDateTime regDate;
@@ -31,8 +39,11 @@ public class Exam {
     @Column(name = "mod_date")
     private LocalDateTime modDate;
 
-    @OneToMany(mappedBy = "exam")
+    @OneToMany(mappedBy = "examId")
     private List<ExamSubject> examSubject;
+
+//    @OneToMany(mappedBy = "exam")
+//    private List<ExamSubject> examSubject;
 
     @PrePersist
     protected void onCreate() {

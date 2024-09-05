@@ -29,6 +29,13 @@ public class ClassroomDynamicRepository {
     QMember memberSubjectTeacher = new QMember("memberSubjectTeacher");
     QMember memberStudent = new QMember("memberStudent");
 
+    public List<Classroom> findGradeAndClassSection(ClassroomCondition condition) {
+        JPAQuery<Classroom> selectQuery = fetchSelect(condition);
+        List<Classroom> content = selectQuery.fetch();
+
+        return content;
+    }
+
     public Page<Classroom> findAll(ClassroomCondition condition) {
         long count = fetchCount(condition);
         int page = (condition.getPage() - 1) * condition.getSize();
@@ -110,7 +117,7 @@ public class ClassroomDynamicRepository {
 
     public BooleanExpression eqSubjectCode(ClassroomCondition condition) {
         return condition.getSubjectCode() != null
-                ? classStaff.subjectCode.eq(condition.getSubjectCode())
+                ? classStaff.subject.subjectCode.eq(condition.getSubjectCode())
                 : null;
     }
 }

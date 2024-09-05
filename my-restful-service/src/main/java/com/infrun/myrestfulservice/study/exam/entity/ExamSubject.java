@@ -25,36 +25,20 @@ public class ExamSubject {
     @JoinColumn(name = "subject_code", nullable = false)
     private Subject subject;
 
-    @Column(name = "tester")
-    private String tester;
+    @Column(name = "exam_id")
+    private Integer examId;
 
-    @Column(name = "exam_date")
-    private LocalDate examDate;
+//    @ManyToOne
+//    @JoinColumn(name = "exam_id", nullable = false)
+//    private Exam exam;
 
-    @Column(name = "exam_order")
-    private int examOrder;
-
-    @Column(name = "exam_duration_minute")
-    private int examDurationMinute;
-
-    @Column(name = "grade")
-    private int grade;
-
-    @ManyToOne
-    @JoinColumn(name = "exam_id", nullable = false)
-    private Exam exam;
-
-    @OneToMany(mappedBy = "examSubject")
+    @OneToMany(mappedBy = "examSubjectId")
     private List<ExamScore> ExamScore;
 
     @Builder
-    public ExamSubject(Exam exam, Subject subject, String tester, LocalDate examDate, int examOrder, int examDurationMinute, int grade) {
-        this.exam = exam;
+    public ExamSubject(Integer examSubjectId, Integer examId, Subject subject) {
+        this.examSubjectId = examSubjectId;
+        this.examId = examId;
         this.subject = subject;
-        this.tester = tester;
-        this.examDate = examDate;
-        this.examOrder = examOrder;
-        this.examDurationMinute = examDurationMinute;
-        this.grade = grade;
     }
 }

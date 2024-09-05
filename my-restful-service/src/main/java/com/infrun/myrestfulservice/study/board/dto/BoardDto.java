@@ -19,7 +19,6 @@ public class BoardDto {
     @NotBlank(message = "제목을 입력해주세요")
     private String title;
     private String content;
-    @JsonIgnore
     private String writerMemberId;
     private String writerName;
     @JsonIgnore

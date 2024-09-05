@@ -32,9 +32,13 @@ public class BoardService {
 
     @Transactional
     public Board saveBoard (BoardDto boardDto, BoardConfig boardConfig, BoardStatus boardStatus) {
+
+        System.out.println("1111111111111111111" + boardDto);
         Member member = memberRepository
                 .findById(boardDto.getWriterMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("Board not found with id: " + boardDto.getWriterMemberId()));
+
+        System.out.println("22222222222222222222");
 
         Board board = Board.builder()
                 .boardConfig(boardConfig)

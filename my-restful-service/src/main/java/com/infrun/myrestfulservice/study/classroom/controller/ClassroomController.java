@@ -2,6 +2,7 @@ package com.infrun.myrestfulservice.study.classroom.controller;
 
 import com.infrun.myrestfulservice.study.classroom.dto.ClassroomCondition;
 import com.infrun.myrestfulservice.study.classroom.dto.ClassroomDto;
+import com.infrun.myrestfulservice.study.classroom.dto.GradeClassSectionDto;
 import com.infrun.myrestfulservice.study.classroom.entiry.Classroom;
 import com.infrun.myrestfulservice.study.classroom.service.ClassroomService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
@@ -18,6 +19,20 @@ import java.util.Optional;
 public class ClassroomController {
     @Autowired
     private ClassroomService classroomService;
+
+    @GetMapping("/grade-section")
+    private CommonResponse getGradeAndClassSection(@ModelAttribute ClassroomCondition condition) {
+        CommonResponse commonResponse = new CommonResponse();
+
+        try {
+            List<GradeClassSectionDto> classrooms = classroomService.findGradeClassSection(condition);
+            commonResponse.setData(classrooms);
+        } catch (Exception e) {
+            commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+
+        return commonResponse;
+    }
 
     @GetMapping
     private CommonResponse getClassrooms(@ModelAttribute ClassroomCondition condition) {

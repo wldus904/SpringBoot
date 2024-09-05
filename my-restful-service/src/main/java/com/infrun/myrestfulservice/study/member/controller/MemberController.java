@@ -75,12 +75,12 @@ public class MemberController {
         return new CommonResponse(memberDtos);
     }
 
-    @GetMapping("/{id}")
-    public CommonResponse getMemberById(@PathVariable String id) {
+    @GetMapping("/{memberId}")
+    public CommonResponse getMemberById(@PathVariable String memberId) {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            MemberDto memberDto = memberService.getMemberById(id);
+            MemberDto memberDto = memberService.getMemberById(memberId);
             commonResponse.setData(memberDto);
         } catch (UserNotFoundException e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());

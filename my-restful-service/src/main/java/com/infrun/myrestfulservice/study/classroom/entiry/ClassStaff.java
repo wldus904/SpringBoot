@@ -2,6 +2,7 @@ package com.infrun.myrestfulservice.study.classroom.entiry;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infrun.myrestfulservice.study.member.entity.Member;
+import com.infrun.myrestfulservice.study.subject.entity.Subject;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +18,12 @@ public class ClassStaff {
     @EmbeddedId
     private ClassCombinedId id;
 
-    @Column(name = "subject_code")
-    private String subjectCode;
+//    @Column(name = "subject_code")
+//    private String subjectCode;
+
+    @OneToOne
+    @JoinColumn(name = "subject_code")
+    private Subject subject;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)

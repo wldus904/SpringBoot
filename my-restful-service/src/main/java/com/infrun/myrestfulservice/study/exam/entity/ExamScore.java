@@ -27,13 +27,19 @@ public class ExamScore {
     @Column(name = "mod_date")
     private LocalDateTime modDate;
 
-    @ManyToOne
-    @JoinColumn(name = "exam_id", nullable = false)
-    private Exam exam;
+    @Column(name = "exam_id")
+    private Integer examId;
 
-    @ManyToOne
-    @JoinColumn(name = "exam_subject_id", nullable = false)
-    private ExamSubject examSubject;
+    @Column(name = "exam_subject_id")
+    private Integer examSubjectId;
+
+//    @ManyToOne
+//    @JoinColumn(name = "exam_id", nullable = false)
+//    private Exam exam;
+
+//    @ManyToOne
+//    @JoinColumn(name = "exam_subject_id", nullable = false)
+//    private ExamSubject examSubject;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
@@ -51,13 +57,13 @@ public class ExamScore {
     }
 
     @Builder
-    public ExamScore (Integer examScoreId, Exam exam, ExamSubject examSubject, Member member, int score, LocalDateTime regDate, LocalDateTime modDate) {
+    public ExamScore (Integer examScoreId, Integer examId, Integer examSubjectId, Member member, int score, LocalDateTime regDate, LocalDateTime modDate) {
         this.examScoreId = examScoreId;
-        this.exam = exam;
-        this.examSubject = examSubject;
+        this.examId = examId;
+        this.examSubjectId = examSubjectId;
         this.member = member;
         this.score = score;
-        this.regDate = regDate;
-        this.modDate = modDate;
+        this.regDate = (regDate == null) ? LocalDateTime.now() : regDate;
+        this.modDate = (modDate == null) ? LocalDateTime.now() : modDate;
     }
 }
