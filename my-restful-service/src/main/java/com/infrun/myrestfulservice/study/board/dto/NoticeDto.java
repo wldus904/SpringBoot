@@ -11,7 +11,7 @@ public class NoticeDto extends BoardDto {
     public static NoticeDto toDto(Board board) {
         NoticeDto noticeDto = new NoticeDto();
 
-        noticeDto.setBoardConfigId(board.getBoardId());
+        noticeDto.setBoardConfigId(board.getBoardConfig().getBoardConfigId());
         noticeDto.setBoardId(board.getBoardId());
         noticeDto.setBoardName(board.getBoardConfig().getTitle());
         noticeDto.setTitle(board.getTitle());

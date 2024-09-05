@@ -1,5 +1,6 @@
 package com.infrun.myrestfulservice.study.classroom.entiry;
 
+import com.infrun.myrestfulservice.study.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,17 +27,18 @@ public class Classroom {
     @Column(name = "class_section")
     private int classSection;
 
-    @Column(name = "homeroom_teacher")
-    private String homeroomTeacher;
-
-    @Column(name = "reg_date")
-    private LocalDateTime regDate;
+    @OneToOne
+    @JoinColumn(name = "homeroom_teacher", referencedColumnName = "member_id", nullable = false)
+    private Member member;
 
     @OneToMany(mappedBy = "classroom")
     private List<ClassStudent> classStudent;
 
     @OneToMany(mappedBy = "classroom")
     private List<ClassStaff> classStaff;
+
+    @Column(name = "reg_date")
+    private LocalDateTime regDate;
 
     @PrePersist
     protected void onCreate() {

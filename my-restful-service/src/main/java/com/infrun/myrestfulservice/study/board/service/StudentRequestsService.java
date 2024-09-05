@@ -5,6 +5,7 @@ import com.infrun.myrestfulservice.study.board.constant.BoardStatus;
 import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.dto.StudentRequestDto;
+import com.infrun.myrestfulservice.study.board.dto.StudentRequestListDto;
 import com.infrun.myrestfulservice.study.board.entity.Board;
 import com.infrun.myrestfulservice.study.board.entity.BoardConfig;
 import com.infrun.myrestfulservice.study.board.entity.StudentRequests;
@@ -39,10 +40,10 @@ public class StudentRequestsService {
         return StudentRequestDto.toDto(board);
     }
 
-    public Page<StudentRequestDto> getStudentRequests (BoardCondition condition) {
+    public Page<StudentRequestListDto> getStudentRequests (BoardCondition condition) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         Page<Board> boardPages = boardService.findAllBoard(condition, boardConfig.getBoardConfigId());
-        return boardPages.map(StudentRequestDto::toDto);
+        return boardPages.map(StudentRequestListDto::toDto);
     }
 
     public StudentRequestDto getStudentRequest (Integer boardId) {

@@ -2,6 +2,7 @@ package com.infrun.myrestfulservice.study.classroom.dto;
 
 import com.infrun.myrestfulservice.study.classroom.entiry.ClassStudent;
 import com.infrun.myrestfulservice.study.classroom.entiry.Classroom;
+import com.infrun.myrestfulservice.study.member.dto.MemberDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,7 +26,7 @@ public class ClassroomDto {
         classroomDto.setYear(classroom.getYear());
         classroomDto.setGrade(classroom.getGrade());
         classroomDto.setClassSection(classroom.getClassSection());
-        classroomDto.setHomeroomTeacher(classroom.getHomeroomTeacher());
+        classroomDto.setHomeroomTeacher(MemberDto.toDto(classroom.getMember()).getName());
 
         List<ClassStudentDto> studentDtos = classroom.getClassStudent().stream()
                 .map(ClassStudentDto::toDto)

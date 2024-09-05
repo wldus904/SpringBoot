@@ -3,6 +3,7 @@ package com.infrun.myrestfulservice.study.board.controller;
 import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.dto.NoticeDto;
+import com.infrun.myrestfulservice.study.board.dto.NoticeListDto;
 import com.infrun.myrestfulservice.study.board.service.NoticeService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,8 @@ public class NoticeController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Page<NoticeDto> noticeDtos = noticeService.findAllNotice(condition);
-            commonResponse.setData(noticeDtos);
+            Page<NoticeListDto> noticeListDtos = noticeService.findAllNotice(condition);
+            commonResponse.setData(noticeListDtos);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.NOT_FOUND, e.getMessage());
         }

@@ -5,6 +5,7 @@ import com.infrun.myrestfulservice.study.board.constant.BoardConfigType;
 import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.dto.NoticeDto;
+import com.infrun.myrestfulservice.study.board.dto.NoticeListDto;
 import com.infrun.myrestfulservice.study.board.entity.Board;
 import com.infrun.myrestfulservice.study.board.entity.BoardConfig;
 import com.infrun.myrestfulservice.study.board.repository.BoardConfigRepository;
@@ -29,10 +30,10 @@ public class NoticeService {
         return NoticeDto.toDto(board);
     }
 
-    public Page<NoticeDto> findAllNotice (BoardCondition boardCondition) {
+    public Page<NoticeListDto> findAllNotice (BoardCondition boardCondition) {
         BoardConfig boardConfig = boardConfigRepository.getBoardConfigByType(boardConfigType.getCode());
         Page<Board> boardPages = boardService.findAllBoard(boardCondition, boardConfig.getBoardConfigId());
-        return boardPages.map(NoticeDto::toDto);
+        return boardPages.map(NoticeListDto::toDto);
     }
 
     public NoticeDto findNoticeById (Integer boardId) {

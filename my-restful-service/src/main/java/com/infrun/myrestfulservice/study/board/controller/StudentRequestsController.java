@@ -3,6 +3,7 @@ package com.infrun.myrestfulservice.study.board.controller;
 import com.infrun.myrestfulservice.study.board.dto.BoardCondition;
 import com.infrun.myrestfulservice.study.board.dto.BoardDto;
 import com.infrun.myrestfulservice.study.board.dto.StudentRequestDto;
+import com.infrun.myrestfulservice.study.board.dto.StudentRequestListDto;
 import com.infrun.myrestfulservice.study.board.service.StudentRequestsService;
 import com.infrun.myrestfulservice.study.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,8 @@ public class StudentRequestsController {
         CommonResponse commonResponse = new CommonResponse();
 
         try {
-            Page<StudentRequestDto> StudentRequestDtos = studentRequestsService.getStudentRequests(condition);
-            commonResponse.setData(StudentRequestDtos);
+            Page<StudentRequestListDto> StudentRequestListDtos = studentRequestsService.getStudentRequests(condition);
+            commonResponse.setData(StudentRequestListDtos);
         } catch (Exception e) {
             commonResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

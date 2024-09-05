@@ -18,6 +18,7 @@ import java.util.List;
 import static com.infrun.myrestfulservice.study.classroom.entiry.QClassroom.classroom;
 import static com.infrun.myrestfulservice.study.classroom.entiry.QClassStaff.classStaff;
 import static com.infrun.myrestfulservice.study.classroom.entiry.QClassStudent.classStudent;
+import static com.infrun.myrestfulservice.study.member.entity.QMember.member;
 
 @Repository
 @RequiredArgsConstructor
@@ -44,12 +45,13 @@ public class ClassroomDynamicRepository {
 
         return jpaQueryFactory
                 .selectFrom(classroom)
-                .leftJoin(memberHomeroomTeacher)
-                .on(classroom.homeroomTeacher.eq(memberHomeroomTeacher.memberId))
-                .leftJoin(classroom.classStaff, classStaff)
-                .leftJoin(classStaff.member, memberSubjectTeacher)
-                .leftJoin(classroom.classStudent, classStudent)
-                .leftJoin(classStudent.member, memberStudent)
+//                .leftJoin(memberHomeroomTeacher)
+//                .on(classroom.homeroomTeacher.eq(memberHomeroomTeacher.memberId))
+//                .leftJoin(classroom.member, memberHomeroomTeacher)
+//                .leftJoin(classroom.classStaff, classStaff)
+//                .leftJoin(classStaff.member, memberSubjectTeacher)
+//                .leftJoin(classroom.classStudent, classStudent)
+//                .leftJoin(classStudent.member, memberStudent)
                 .where(
                         eqYear(condition),
                         eqGrade(condition),
